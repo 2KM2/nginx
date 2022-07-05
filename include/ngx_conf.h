@@ -2,8 +2,6 @@
 #include <vector>
 using namespace std;
 
-
-#include "common.h"
 #include "ngx_global.h"
 class CConfig
 {

@@ -4,9 +4,8 @@
 #include <string.h>
 #include <vector>
 
-
-#include "ngx_conf.h"
 #include "ngx_global.h"
+#include "ngx_conf.h"
 #include  "ngx_utils.h"
 //静态成员赋值
 CConfig *CConfig::m_instance = NULL;
