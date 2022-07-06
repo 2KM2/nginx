@@ -64,7 +64,7 @@ void ngx_master_process_cycle()
             strcat(title,g_os_argv[i]);
         }//end for
         ngx_setproctitle(title); //设置标题
-        printf("%s %P 启动并开始运行......!\n",title,ngx_pid); //设置标题时顺便记录下来进程名，进程id等信息到日志
+        printf("%s %d 启动并开始运行......!\n",title,ngx_pid); //设置标题时顺便记录下来进程名，进程id等信息到日志
     }
 
      //从配置文件中读取要创建的worker进程数量
@@ -153,7 +153,7 @@ static void ngx_worker_process_cycle(int inum,const char *pprocname)
         //重新为子进程设置进程名，不要与父进程重复------
     ngx_worker_process_init(inum);
     ngx_setproctitle(pprocname); //设置标题   
-    printf("%s %P 启动并开始运行......!",pprocname,ngx_pid); //设置标题时顺便记录下来进程名，进程id等信息到日志
+    printf("%s %d 启动并开始运行......!",pprocname,ngx_pid); //设置标题时顺便记录下来进程名，进程id等信息到日志
 
     //暂时先放个死循环，我们在这个循环里一直不出来
     //setvbuf(stdout,NULL,_IONBF,0); //这个函数. 直接将printf缓冲区禁止， printf就直接输出了。

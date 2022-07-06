@@ -25,7 +25,7 @@ static void ngx_process_get_status(void);                                      /
 ngx_signal_t signals[] = {
     // signo      signame             handler
     {SIGHUP, "SIGHUP", ngx_signal_handler},   //终端断开信号，对于守护进程常用于reload重载配置文件通知--标识1
-    {SIGINT, "SIGINT", ngx_signal_handler},   //标识2
+    //{SIGINT, "SIGINT", ngx_signal_handler},   //标识2
     {SIGTERM, "SIGTERM", ngx_signal_handler}, //标识15
     {SIGCHLD, "SIGCHLD", ngx_signal_handler}, //子进程退出时，父进程会收到这个信号--标识17
     {SIGQUIT, "SIGQUIT", ngx_signal_handler}, //标识3
@@ -136,7 +136,7 @@ static void ngx_signal_handler(int signo, siginfo_t *siginfo, void *ucontext)
     //siginfo这个
     if(siginfo && siginfo->si_pid)  //si_pid = sending process ID【发送该信号的进程id】
     {
-        printf("signal %d (%s) received from %P%s\n", signo, sig->signame, siginfo->si_pid, action); 
+        printf("signal %d (%s) received from %d %s\n", signo, sig->signame, siginfo->si_pid, action); 
     }
     else
     {
@@ -208,11 +208,11 @@ static void ngx_process_get_status(void)
         one = 1;  //标记waitpid()返回了正常的返回值
         if(WTERMSIG(status))  //获取使子进程终止的信号编号
         {
-            printf("pid = %P exited on signal %d!",pid,WTERMSIG(status)); //获取使子进程终止的信号编号
+            printf("pid = %d exited on signal %d!",pid,WTERMSIG(status)); //获取使子进程终止的信号编号
         }
         else
         {
-            printf("pid = %P exited with code %d!",pid,WEXITSTATUS(status)); //WEXITSTATUS()获取子进程传递给exit或者_exit参数的低八位
+            printf("pid = %d exited with code %d!",pid,WEXITSTATUS(status)); //WEXITSTATUS()获取子进程传递给exit或者_exit参数的低八位
         }
     } //end for
     return;
