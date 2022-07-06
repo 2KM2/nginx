@@ -8,22 +8,15 @@
 //设置可执行程序标题相关函数：分配内存，并且把环境变量拷贝到新内存中来
 void ngx_init_setproctitle()
 {
-    int i;
-    //统计环境变量所占的内存。注意判断方法是environ[i]是否为空作为环境变量结束标记
-    for (i = 0; environ[i];i++)
-    {
-        g_environlen += strlen(environ[i]) + 1;
-    }//end for
-
-    gp_envmem = new char[g_environlen];
-    memset(gp_envmem, 0, g_environlen);
+    //这里无需判断penvmen == NULL,有些编译器new会返回NULL，有些会报异常，但不管怎样，如果在重要的地方new失败了，你无法收场，让程序失控崩溃，助你发现问题为好； 
+    gp_envmem = new char[g_envneedmem]; 
+    memset(gp_envmem,0,g_envneedmem);  //内存要清空防止出现问题
 
     char *ptmp = gp_envmem;
-
-     //把原来的内存内容搬到新地方来
-    for (i = 0; environ[i];i++)
+    //把原来的内存内容搬到新地方来
+    for (int i = 0; environ[i]; i++) 
     {
-        size_t size = strlen(environ[i]) + 1;
+        size_t size = strlen(environ[i])+1 ; //不要拉下+1，否则内存全乱套了，因为strlen是不包括字符串末尾的\0的
         strcpy(ptmp,environ[i]);      //把原环境变量内容拷贝到新地方【新内存】
         environ[i] = ptmp;            //然后还要让新环境变量指向这段新内存
         ptmp += size;
@@ -41,7 +34,7 @@ void ngx_setproctitle(const char *title)
         e_environlen += strlen(g_os_argv[i]) + 1;
     }
 
-    size_t esy = e_environlen + g_environlen;
+    size_t esy = e_environlen + g_envneedmem;
     if( esy <= ititlelen)
     {
         return;
